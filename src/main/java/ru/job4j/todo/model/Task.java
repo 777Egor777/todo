@@ -17,9 +17,9 @@ public class Task {
     private int id;
     @Column(updatable = false, nullable = false)
     private String userLogin;
-    @Column(updatable = false,nullable = false)
+    @Column(updatable = false, nullable = false)
     private String description;
-    @Column(updatable = false,nullable = false)
+    @Column(updatable = false, nullable = false)
     private Timestamp created;
     @Column(nullable = false)
     private boolean done;
@@ -76,14 +76,18 @@ public class Task {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Task task = (Task) o;
-        return id == task.id &&
-                done == task.done &&
-                Objects.equals(userLogin, task.userLogin) &&
-                Objects.equals(description, task.description) &&
-                Objects.equals(created, task.created);
+        return id == task.id
+                && done == task.done
+                && Objects.equals(userLogin, task.userLogin)
+                && Objects.equals(description, task.description)
+                && Objects.equals(created, task.created);
     }
 
     @Override
@@ -93,12 +97,12 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", userLogin='" + userLogin + '\'' +
-                ", desc='" + description + '\'' +
-                ", created=" + created +
-                ", done=" + done +
-                '}';
+        return "Task{"
+                + "id=" + id
+                + ", userLogin='" + userLogin + '\''
+                + ", desc='" + description + '\''
+                + ", created=" + created
+                + ", done=" + done
+                + '}';
     }
 }
