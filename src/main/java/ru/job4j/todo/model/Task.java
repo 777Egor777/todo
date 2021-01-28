@@ -15,8 +15,9 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(updatable = false, nullable = false)
-    private String userLogin;
+    @ManyToOne
+    @JoinColumn(name = "userLogin")
+    private User user;
     @Column(updatable = false, nullable = false)
     private String description;
     @Column(updatable = false, nullable = false)
@@ -28,7 +29,7 @@ public class Task {
     }
 
     public Task(String userLogin, String description, Timestamp created, boolean done) {
-        this.userLogin = userLogin;
+        this.user = new User(userLogin);
         this.description = description;
         this.created = created;
         this.done = done;
@@ -67,11 +68,19 @@ public class Task {
     }
 
     public String getUserLogin() {
-        return userLogin;
+        return user.getLogin();
     }
 
     public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
+        user.setLogin(userLogin);
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -85,21 +94,21 @@ public class Task {
         Task task = (Task) o;
         return id == task.id
                 && done == task.done
-                && Objects.equals(userLogin, task.userLogin)
+                && Objects.equals(user.getLogin(), task.getUserLogin())
                 && Objects.equals(description, task.description)
                 && Objects.equals(created, task.created);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userLogin, description, created, done);
+        return Objects.hash(id, user.getLogin(), description, created, done);
     }
 
     @Override
     public String toString() {
         return "Task{"
                 + "id=" + id
-                + ", userLogin='" + userLogin + '\''
+                + ", userLogin='" + user.getLogin() + '\''
                 + ", desc='" + description + '\''
                 + ", created=" + created
                 + ", done=" + done
