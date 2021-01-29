@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,7 +74,7 @@ public class IndexServlet extends HttpServlet {
         } else {
             String desc = req.getParameter("desc");
             User user = (User) req.getSession().getAttribute("user");
-            Task task = new Task(user.getLogin(), desc, new Timestamp(System.currentTimeMillis()), false);
+            Task task = new Task(user.getLogin(), desc, new Date(System.currentTimeMillis()), false);
             for (String idStr : req.getParameterValues("cIds")) {
                 task.addCategory(new Category(Integer.parseInt(idStr)));
             }

@@ -3,6 +3,7 @@ package ru.job4j.todo.model;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +24,8 @@ public class Task {
     @Column(updatable = false, nullable = false)
     private String description;
     @Column(updatable = false, nullable = false)
-    private Timestamp created;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created;
     @Column(nullable = false)
     private boolean done;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
@@ -32,7 +34,7 @@ public class Task {
     public Task() {
     }
 
-    public Task(String userLogin, String description, Timestamp created, boolean done) {
+    public Task(String userLogin, String description, Date created, boolean done) {
         this.user = new User(userLogin);
         this.description = description;
         this.created = created;
@@ -55,11 +57,11 @@ public class Task {
         this.description = description;
     }
 
-    public Timestamp getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(Timestamp created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 

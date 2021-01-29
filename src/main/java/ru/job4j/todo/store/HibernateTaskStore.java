@@ -11,6 +11,7 @@ import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
 
+import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 
@@ -105,7 +106,6 @@ public class HibernateTaskStore implements TaskStore, AutoCloseable {
     }
 
     public static void main(String[] args) {
-        Task task = instOf().get(7);
-        System.out.println(task.getCategories());
+        instOf().add(new Task("yegeraskin13", "Test123", new Date(System.currentTimeMillis()), false));
     }
 }
