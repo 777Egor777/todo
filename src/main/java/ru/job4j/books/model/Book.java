@@ -2,6 +2,7 @@ package ru.job4j.books.model;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.StringJoiner;
 
 /**
  * @author Egor Geraskin(yegeraskin13@gmail.com)
@@ -59,9 +60,9 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{"
-                + "id=" + id
-                + ", name='" + name + '\''
-                + '}';
+        return new StringJoiner(", ", Book.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .toString();
     }
 }

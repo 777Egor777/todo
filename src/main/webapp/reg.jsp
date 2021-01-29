@@ -21,7 +21,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">ToDo</a>
+        <a class="navbar-carBrand" href="#">ToDo</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -80,16 +80,16 @@
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/reg.do" method="post" accept-charset="x-UTF-16LE-BOM">
                     <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" name="name" id="name" >
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Имя">
                     </div>
                     <div class="form-group">
-                        <label>Login</label>
-                        <input type="text" class="form-control" name="login" id="login">
+                        <label for="login">Login</label>
+                        <input type="text" class="form-control" name="login" id="login" placeholder="Логин">
                     </div>
                     <div class="form-group">
-                        <label>Password</label>
-                        <input type="text" class="form-control" name="password" id="pwd">
+                        <label for="pwd">Password</label>
+                        <input type="text" class="form-control" name="password" id="pwd" placeholder="Пароль">
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="return validate();">Register</button>
                 </form>

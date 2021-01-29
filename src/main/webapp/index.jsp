@@ -72,7 +72,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">ToDo</a>
+        <a class="navbar-carBrand" href="#">ToDo</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -107,7 +107,7 @@
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/index.do" method="post">
                     <div class="form-group">
-                        <label>Описание</label>
+                        <label for="desc">Описание</label>
                         <textarea rows="10" cols="45" name="desc" id="desc" placeholder="Введите задачу"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="return validate();">Добавить</button>
