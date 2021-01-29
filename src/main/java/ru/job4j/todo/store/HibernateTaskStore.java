@@ -7,7 +7,9 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Task;
+import ru.job4j.todo.model.User;
 
 import java.util.List;
 import java.util.function.Function;
@@ -74,8 +76,8 @@ public class HibernateTaskStore implements TaskStore, AutoCloseable {
     public List<Task> getAll(String userLogin) {
         return tx(session -> {
             Query query = session.createQuery(
-                    "from ru.job4j.todo.model.Task where userLogin = :paramUserLogin");
-            query.setParameter("paramUserLogin", userLogin);
+                    "from ru.job4j.todo.model.Task where user = :paramUser");
+            query.setParameter("paramUser", new User(userLogin));
             return query.list();
         });
     }
@@ -84,16 +86,26 @@ public class HibernateTaskStore implements TaskStore, AutoCloseable {
     public List<Task> getAllOpen(String userLogin) {
         return tx(session -> {
             Query query = session.createQuery(
-                    "from ru.job4j.todo.model.Task where done = :paramDone and userLogin = :paramUserLogin");
+                    "from ru.job4j.todo.model.Task where done = :paramDone and user = :paramUser");
             query.setParameter("paramDone", false);
-            query.setParameter("paramUserLogin", userLogin);
+            query.setParameter("paramUser", new User(userLogin));
             return query.list();
         });
     }
 
     @Override
-    public void close() throws Exception {
+    public List<Category> getAllCategories() {
+        return tx(session ->
+                session.createQuery("from ru.job4j.todo.model.Category").list());
+    }
+
+    @Override
+    public void close() {
         StandardServiceRegistryBuilder.destroy(registry);
     }
 
+    public static void main(String[] args) {
+        Task task = instOf().get(7);
+        System.out.println(task.getCategories());
+    }
 }

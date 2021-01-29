@@ -1,5 +1,6 @@
 package ru.job4j.todo.store;
 
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Task;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface TaskStore {
     Task update(Task task);
     List<Task> getAll(String userLogin);
     List<Task> getAllOpen(String userLogin);
+    List<Category> getAllCategories();
 }

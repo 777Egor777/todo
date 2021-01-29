@@ -1,6 +1,7 @@
 package ru.job4j.todo.model;
 
 import javax.persistence.*;
+import java.util.StringJoiner;
 
 /**
  * @author Egor Geraskin(yegeraskin13@gmail.com)
@@ -53,5 +54,33 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        User user = (User) o;
+
+        return login.equals(user.login);
+    }
+
+    @Override
+    public int hashCode() {
+        return login.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", User.class.getSimpleName() + "[", "]")
+                .add("login='" + login + "'")
+                .add("password='" + password + "'")
+                .add("name='" + name + "'")
+                .toString();
     }
 }

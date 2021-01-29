@@ -1,5 +1,6 @@
 <%@ page import="ru.job4j.todo.model.User" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,6 +27,7 @@
         }
         $(document).ready(
             function () {
+                //console.log(request.getAttribute("allCategories"));
                 renderTable();
             }
         );
@@ -41,6 +43,13 @@
                     let content = "";
                     for (let i = 0; i < tasks.length; i++) {
                         content += '<tr><td>' + tasks[i].desc + '</td><td>';
+                        let categoryContent = '<ul>';
+                        let cats = tasks[i].cats;
+                        for (let j = 0; j < cats.length; j++){
+                            categoryContent += '<li>' + cats[j].name + '</li>';
+                        }
+                        categoryContent += '</ul>';
+                        content += categoryContent + '</td><td>';
                         if (tasks[i].done === true) {
                             content += "<label><input type=\"checkbox\" checked=\"checked\" disabled></label>"
                         } else {
@@ -101,16 +110,35 @@
 <div class="container pt-3">
     <div class="row">
         <div class="card" style="width: 100%">
-            <div class="card-header">
+            <div class="card-header" style="font-weight: bold; font-size: larger">
                 Добавить задачу
             </div>
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/index.do" method="post">
-                    <div class="form-group">
-                        <label for="desc">Описание</label>
-                        <textarea rows="10" cols="45" name="desc" id="desc" placeholder="Введите задачу"></textarea>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-3" for="desc" style="font-weight: 900">Описание</label>
+                        <div class="col-sm-5">
+                            <textarea rows="10" cols="45" name="desc" id="desc" placeholder="Введите задачу"></textarea>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary" onclick="return validate();">Добавить</button>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-3" for="cIds" style="font-weight: 900">
+                            Категории
+                        </label>
+                        <div class="col-sm-5">
+                            <select class="form-control" name="cIds" id="cIds" multiple>
+                                <c:forEach items="${allCategories}" var="category">
+                                    <option value='<c:out value="${category.id}"/>'><c:out value="${category.name}"/></option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-form-label col-sm-3" style="font-weight: 900"></label>
+                        <div class="col-sm-5">
+                            <button type="submit" class="btn btn-dark" onclick="return validate();">Добавить</button>
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -125,6 +153,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Задача</th>
+                        <th scope="col">Категории</th>
                         <th scope="col">Выполнено</th>
                     </tr>
                     </thead>

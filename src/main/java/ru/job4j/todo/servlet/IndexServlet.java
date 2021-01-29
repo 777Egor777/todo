@@ -2,6 +2,7 @@ package ru.job4j.todo.servlet;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import ru.job4j.todo.model.Category;
 import ru.job4j.todo.model.Task;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.store.HibernateTaskStore;
@@ -25,6 +26,8 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String showAllStr = req.getParameter("show_all");
         if (showAllStr == null) {
+            List<Category> categories = HibernateTaskStore.instOf().getAllCategories();
+            req.setAttribute("allCategories", categories);
             req.getRequestDispatcher("index.jsp").forward(req, resp);
         } else {
             User user = (User) req.getSession().getAttribute("user");
@@ -41,6 +44,13 @@ public class IndexServlet extends HttpServlet {
                 taskObj.put("desc", task.getDescription());
                 taskObj.put("done", task.isDone());
                 taskObj.put("id", task.getId());
+                JSONArray cats = new JSONArray();
+                for (Category category : task.getCategories()) {
+                    JSONObject cat = new JSONObject();
+                    cat.put("name", category.getName());
+                    cats.add(cat);
+                }
+                taskObj.put("cats", cats);
                 tasks.add(taskObj);
             }
             obj.put("tasks", tasks);
@@ -53,7 +63,7 @@ public class IndexServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
         String taskIdStr = req.getParameter("task_id");
         if (taskIdStr != null) {
@@ -64,6 +74,9 @@ public class IndexServlet extends HttpServlet {
             String desc = req.getParameter("desc");
             User user = (User) req.getSession().getAttribute("user");
             Task task = new Task(user.getLogin(), desc, new Timestamp(System.currentTimeMillis()), false);
+            for (String idStr : req.getParameterValues("cIds")) {
+                task.addCategory(new Category(Integer.parseInt(idStr)));
+            }
             HibernateTaskStore.instOf().add(task);
             resp.sendRedirect("index.do");
         }
