@@ -1,0 +1,108 @@
+package ru.job4j.candidate;
+
+import javax.persistence.*;
+import java.util.Objects;
+import java.util.StringJoiner;
+
+/**
+ * @author Egor Geraskin(yegeraskin13@gmail.com)
+ * @version 1.0
+ * @since 04.02.2021
+ */
+@Entity
+@Table(name = "candidate")
+public class Candidate {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String name;
+    private int experience;
+    private int salary;
+
+    public Candidate() {
+    }
+
+    public Candidate(int id) {
+        this.id = id;
+    }
+
+    public Candidate(String name, int experience, int salary) {
+        this.name = name;
+        this.experience = experience;
+        this.salary = salary;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Candidate candidate = (Candidate) o;
+
+        if (id != candidate.id) {
+            return false;
+        }
+        if (experience != candidate.experience) {
+            return false;
+        }
+        if (salary != candidate.salary) {
+            return false;
+        }
+        return Objects.equals(name, candidate.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + experience;
+        result = 31 * result + salary;
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Candidate.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("name='" + name + "'")
+                .add("experience=" + experience)
+                .add("salary=" + salary)
+                .toString();
+    }
+}
