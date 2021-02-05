@@ -6,7 +6,6 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.Query;
 
 /**
  * @author Egor Geraskin(yegeraskin13@gmail.com)
@@ -15,16 +14,23 @@ import org.hibernate.query.Query;
  */
 public class HbmRun {
     public static void main(String[] args) {
+        Student rsl = null;
+
         final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
                 .configure().build();
         try {
             SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             try (Session session = sf.openSession()) {
                 Transaction tx = session.beginTransaction();
-                Query query = session.createQuery(
-                        "delete from Student where id = :paramId");
-                query.setParameter("paramId", 3);
-                query.executeUpdate();
+                rsl = session.createQuery(
+                        "select distinct st from Student st "
+                         + " join fetch st.account a"
+                         + " join fetch a.libBooks b"
+                         + " where st.id = :paramId",
+                        Student.class
+                ).setParameter("paramId", 1)
+                        .uniqueResult();
+                System.out.println(rsl);
                 tx.commit();
             }
         } catch (Exception ex) {
@@ -32,5 +38,7 @@ public class HbmRun {
         } finally {
             StandardServiceRegistryBuilder.destroy(registry);
         }
+
+        System.out.println(rsl);
     }
 }

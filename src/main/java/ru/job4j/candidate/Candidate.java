@@ -18,6 +18,8 @@ public class Candidate {
     private String name;
     private int experience;
     private int salary;
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    private VacancyBase base;
 
     public Candidate() {
     }
@@ -64,6 +66,14 @@ public class Candidate {
         this.salary = salary;
     }
 
+    public VacancyBase getBase() {
+        return base;
+    }
+
+    public void setBase(VacancyBase base) {
+        this.base = base;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -84,7 +94,10 @@ public class Candidate {
         if (salary != candidate.salary) {
             return false;
         }
-        return Objects.equals(name, candidate.name);
+        if (!Objects.equals(name, candidate.name)) {
+            return false;
+        }
+        return Objects.equals(base, candidate.base);
     }
 
     @Override
@@ -93,6 +106,7 @@ public class Candidate {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + experience;
         result = 31 * result + salary;
+        result = 31 * result + (base != null ? base.hashCode() : 0);
         return result;
     }
 
@@ -103,6 +117,7 @@ public class Candidate {
                 .add("name='" + name + "'")
                 .add("experience=" + experience)
                 .add("salary=" + salary)
+                .add("base=" + base)
                 .toString();
     }
 }

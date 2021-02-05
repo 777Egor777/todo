@@ -18,6 +18,9 @@ public class Student {
     private String name;
     private int age;
     private String city;
+    @OneToOne (cascade = CascadeType.ALL,
+               fetch = FetchType.LAZY)
+    private Account account;
 
     public Student() {
     }
@@ -30,6 +33,13 @@ public class Student {
         this.name = name;
         this.age = age;
         this.city = city;
+    }
+
+    public Student(String name, int age, String city, Account account) {
+        this.name = name;
+        this.age = age;
+        this.city = city;
+        this.account = account;
     }
 
     public int getId() {
@@ -64,6 +74,14 @@ public class Student {
         this.city = city;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -84,7 +102,10 @@ public class Student {
         if (!Objects.equals(name, student.name)) {
             return false;
         }
-        return Objects.equals(city, student.city);
+        if (!Objects.equals(city, student.city)) {
+            return false;
+        }
+        return Objects.equals(account, student.account);
     }
 
     @Override
@@ -93,6 +114,7 @@ public class Student {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + age;
         result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (account != null ? account.hashCode() : 0);
         return result;
     }
 
@@ -103,6 +125,7 @@ public class Student {
                 .add("name='" + name + "'")
                 .add("age=" + age)
                 .add("city='" + city + "'")
+                .add("account=" + account)
                 .toString();
     }
 }

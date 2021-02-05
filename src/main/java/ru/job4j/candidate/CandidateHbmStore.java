@@ -46,11 +46,13 @@ public class CandidateHbmStore implements AutoCloseable {
     public void update(Candidate candidate) {
         tx(session -> {
             Query query = session.createQuery(
-                    "update Candidate c set c.name = :paramName, c.experience = :paramExp, c.salary = :paramSalary where c.id = :paramId");
+                    "update Candidate c set c.name = :paramName, c.experience = :paramExp, c.salary = :paramSalary,"
+                            + " c.base = :paramBase where c.id = :paramId");
             query.setParameter("paramId", candidate.getId());
             query.setParameter("paramName", candidate.getName());
             query.setParameter("paramExp", candidate.getExperience());
             query.setParameter("paramSalary", candidate.getSalary());
+            query.setParameter("paramBase", candidate.getBase());
             query.executeUpdate();
             return null;
         });
@@ -67,7 +69,14 @@ public class CandidateHbmStore implements AutoCloseable {
     }
 
     public List<Candidate> getAll() {
-        return tx(session -> session.createQuery("from Candidate ").list());
+        return tx(session -> {
+           Query query = session.createQuery(
+                   "select distinct c from Candidate c"
+                           + " join fetch c.base b"
+                           + " join fetch b.vacancies v",
+                   Candidate.class);
+           return query.list();
+        });
     }
 
     public Candidate getById(int id) {
