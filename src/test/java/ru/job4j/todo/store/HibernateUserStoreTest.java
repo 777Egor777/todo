@@ -10,7 +10,7 @@ public class HibernateUserStoreTest {
 
     @Test
     public void add() throws Exception {
-        try(UserStore store = HibernateUserStore.testInstance()) {
+        try (UserStore store = HibernateUserStore.testInstance()) {
             User user = new User("test", "test", "test");
             user = store.add(user);
             assertThat(store.get("test"), is(user));
@@ -19,7 +19,7 @@ public class HibernateUserStoreTest {
 
     @Test
     public void update() throws Exception {
-        try(UserStore store = HibernateUserStore.testInstance()) {
+        try (UserStore store = HibernateUserStore.testInstance()) {
             User user = new User("test", "test", "test");
             user = store.add(user);
             user.setName("egor");

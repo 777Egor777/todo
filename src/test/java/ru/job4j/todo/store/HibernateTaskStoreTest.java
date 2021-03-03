@@ -36,7 +36,7 @@ public class HibernateTaskStoreTest {
                     new Date(), false);
             task = tasks.add(task);
             task.setDone(true);
-            task= tasks.update(task);
+            task = tasks.update(task);
             assertThat(tasks.get(task.getId()), is(task));
         }
     }
