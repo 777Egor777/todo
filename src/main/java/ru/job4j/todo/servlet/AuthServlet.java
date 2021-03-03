@@ -4,7 +4,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import ru.job4j.todo.model.User;
 import ru.job4j.todo.store.HibernateUserStore;
+import ru.job4j.todo.store.UserStore;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +27,8 @@ import java.util.stream.Collectors;
 public class AuthServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/auth.jsp").forward(req, resp);
+        RequestDispatcher disp = req.getRequestDispatcher("/auth.jsp");
+        disp.forward(req, resp);
     }
 
     @Override
@@ -34,14 +37,16 @@ public class AuthServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        User user = HibernateUserStore.instOf().get(login);
+        UserStore store = HibernateUserStore.instOf();
+        User user = store.get(login);
 
         if (user == null) {
             resp.sendRedirect("auth.jsp?errMsg=\"No such login\"");
         } else if (!user.getPassword().equals(password)) {
             resp.sendRedirect("auth.jsp?errMsg=\"Incorrect password\"");
         } else {
-            req.getSession().setAttribute("user", user);
+            HttpSession session = req.getSession();
+            session.setAttribute("user", user);
             resp.sendRedirect("index.do");
         }
     }

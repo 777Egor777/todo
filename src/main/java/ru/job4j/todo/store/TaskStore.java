@@ -10,7 +10,7 @@ import java.util.List;
  * @version 1.0
  * @since 27.01.2021
  */
-public interface TaskStore {
+public interface TaskStore extends AutoCloseable {
     Task get(int id);
     Task add(Task task);
     Task update(Task task);

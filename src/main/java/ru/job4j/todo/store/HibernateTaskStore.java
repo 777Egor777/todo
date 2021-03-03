@@ -20,7 +20,7 @@ import java.util.function.Function;
  * @version 1.0
  * @since 27.01.2021
  */
-public class HibernateTaskStore implements TaskStore, AutoCloseable {
+public class HibernateTaskStore implements TaskStore {
     private final StandardServiceRegistry registry =
             new StandardServiceRegistryBuilder().configure().build();
     private final SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
@@ -36,12 +36,18 @@ public class HibernateTaskStore implements TaskStore, AutoCloseable {
         return Holder.INSTANCE;
     }
 
+    public static TaskStore testInstance() {
+        return new HibernateTaskStore();
+    }
+
     @SuppressWarnings("DuplicatedCode")
     private <T> T tx(Function<Session, T> func) {
         final Session session = sf.openSession();
         final Transaction tx = session.beginTransaction();
         try {
+            session.clear();
             T rsl = func.apply(session);
+            session.flush();
             tx.commit();
             return rsl;
         } catch (Exception ex) {

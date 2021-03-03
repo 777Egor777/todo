@@ -18,16 +18,21 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @ManyToOne
     @JoinColumn(name = "userLogin")
     private User user;
+
     @Column(updatable = false, nullable = false)
     private String description;
+
     @Column(updatable = false, nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date created;
+
     @Column(nullable = false)
     private boolean done;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private List<Category> categories = new ArrayList<>();
 
@@ -114,7 +119,7 @@ public class Task {
                 && done == task.done
                 && Objects.equals(user.getLogin(), task.getUserLogin())
                 && Objects.equals(description, task.description)
-                && Objects.equals(created, task.created);
+                && Objects.equals(created.getTime(), task.created.getTime());
     }
 
     @Override

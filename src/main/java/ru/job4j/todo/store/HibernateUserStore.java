@@ -16,7 +16,7 @@ import java.util.function.Function;
  * @version 1.0
  * @since 25.01.2021
  */
-public class HibernateUserStore implements UserStore, AutoCloseable {
+public class HibernateUserStore implements UserStore {
     private final StandardServiceRegistry registry =
             new StandardServiceRegistryBuilder().configure().build();
     private final SessionFactory sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
@@ -32,6 +32,10 @@ public class HibernateUserStore implements UserStore, AutoCloseable {
         return Holder.INSTANCE;
     }
 
+    public static UserStore testInstance() {
+        return new HibernateUserStore();
+    }
+
     @Override
     public void close() throws Exception {
         StandardServiceRegistryBuilder.destroy(registry);
@@ -41,7 +45,9 @@ public class HibernateUserStore implements UserStore, AutoCloseable {
         final Session session = sf.openSession();
         final Transaction tx = session.beginTransaction();
         try {
+            session.clear();
             T rsl = func.apply(session);
+            session.flush();
             tx.commit();
             return rsl;
         } catch (Exception ex) {
