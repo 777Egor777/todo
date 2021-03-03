@@ -18,11 +18,20 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * Сервлет для работы со списком задач на
+ * главной странице(index.jsp)
+ *
  * @author Egor Geraskin(yegeraskin13@gmail.com)
  * @version 1.0
  * @since 25.01.2021
  */
 public class IndexServlet extends HttpServlet {
+
+    /**
+     * Метод отправляет JSON-объект на index.jsp
+     * с информацией о списке задач,
+     * в ответ на AJAX-запрос.
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String showAllStr = req.getParameter("show_all");
@@ -63,6 +72,14 @@ public class IndexServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Метод принимает POST-запросы с главной страницы.
+     * Выполняет 2 функции:
+     * 1) Добавляет новую задачу в хранилище.
+     * 2) Помечает существующую задачу
+     *    как выполненную и обновляет
+     *    информацию по ней в хранилище.
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         req.setCharacterEncoding("utf-8");
