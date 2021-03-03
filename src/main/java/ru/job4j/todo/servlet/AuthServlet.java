@@ -20,6 +20,14 @@ import java.nio.Buffer;
 import java.util.stream.Collectors;
 
 /**
+ * Сервлет для страницы авторизации
+ * пользователей.
+ *
+ * Поддерживает валидацию, если
+ * введены неверные данные, пользователю
+ * будет выведено всплывающее окно
+ * с соответствующей ошибкой.
+ *
  * @author Egor Geraskin(yegeraskin13@gmail.com)
  * @version 1.0
  * @since 25.01.2021

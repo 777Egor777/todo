@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.util.StringJoiner;
 
 /**
+ * Категория задачи.
+ *
  * @author Egor Geraskin(yegeraskin13@gmail.com)
  * @version 1.0
  * @since 29.01.2021

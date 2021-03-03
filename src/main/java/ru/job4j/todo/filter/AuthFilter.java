@@ -6,6 +6,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * Фильтр авторизации пользователей.
+ * Пользователь не сможет управлять
+ * функционалом сайта не будучи
+ * авторизованным.
+ *
  * @author Egor Geraskin(yegeraskin13@gmail.com)
  * @version 1.0
  * @since 27.01.2021

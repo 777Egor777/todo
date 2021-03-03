@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
+ * Модель данных "пользователь"
+ *
  * @author Egor Geraskin(yegeraskin13@gmail.com)
  * @version 1.0
  * @since 25.01.2021

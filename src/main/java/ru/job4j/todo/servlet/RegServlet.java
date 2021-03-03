@@ -14,17 +14,53 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * Сервлет для страницы регистрации
+ * пользователей.
+ *
+ * Поддерживает валидацию, если
+ * введённый e-mail уже занят,
+ * пользователю будет выведено
+ * всплывающее окно с соответствующим
+ * сообщением.
+ *
  * @author Egor Geraskin(yegeraskin13@gmail.com)
  * @version 1.0
  * @since 25.01.2021
  */
 public class RegServlet extends HttpServlet {
+
+    /**
+     * Переопределяет метод doGet
+     * класса HttpServlet.
+     *
+     * Перенаправляет запрос на JSP
+     * @param req - объект запроса(HttpServletRequest)
+     * @param resp - объект ответа(HttpServletResponse)
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         RequestDispatcher disp = req.getRequestDispatcher("/reg.jsp");
         disp.forward(req, resp);
     }
 
+
+    /**
+     * Переопределяет метод doPost
+     * класса HttpServlet
+     *
+     * Получает данные пользователя
+     * с формы JSP.
+     * Валидирует их.
+     *
+     * Добавляет нового пользователя
+     * в хранилище.
+     *
+     * Добавляет объект пользователя
+     * в сессию.
+     *
+     * @param req - объект запроса(HttpServletRequest)
+     * @param resp - объект ответа(HttpServletResponse)
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
